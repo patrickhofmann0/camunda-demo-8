@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0od2sy7" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.23.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.5.0">
+  <bpmn:process id="demo_8_process" name="DEMO process for camunda" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_1kp3ygj</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1kp3ygj" sourceRef="StartEvent_1" targetRef="Activity_0lcd8sz" />
+    <bpmn:serviceTask id="Activity_0lcd8sz" name="do magic with process data">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="jb_magic_process_data" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1kp3ygj</bpmn:incoming>
+      <bpmn:outgoing>Flow_1e3klhy</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_1790zec" name="print formular link to console">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="jb_print_link" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1e3klhy</bpmn:incoming>
+      <bpmn:outgoing>Flow_0xry7ma</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1e3klhy" sourceRef="Activity_0lcd8sz" targetRef="Activity_1790zec" />
+    <bpmn:receiveTask id="Activity_0mluwzr" name="user fills form" messageRef="Message_1o9e6u9">
+      <bpmn:incoming>Flow_0xry7ma</bpmn:incoming>
+      <bpmn:outgoing>Flow_103rahu</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:sequenceFlow id="Flow_0xry7ma" sourceRef="Activity_1790zec" targetRef="Activity_0mluwzr" />
+    <bpmn:boundaryEvent id="Event_0ceu5cw" cancelActivity="false" attachedToRef="Activity_0mluwzr">
+      <bpmn:outgoing>Flow_1ak058u</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_1xqr7jk">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">=reminderDuration</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="Flow_1ak058u" sourceRef="Event_0ceu5cw" targetRef="Activity_051lkjy" />
+    <bpmn:endEvent id="Event_1rhh6uq" name="reminder printed">
+      <bpmn:incoming>Flow_1ull138</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1ull138" sourceRef="Activity_051lkjy" targetRef="Event_1rhh6uq" />
+    <bpmn:serviceTask id="Activity_051lkjy" name="print reminder to console">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="jb_print_reminder" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1ak058u</bpmn:incoming>
+      <bpmn:outgoing>Flow_1ull138</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_103rahu" sourceRef="Activity_0mluwzr" targetRef="Gateway_030omrb" />
+    <bpmn:serviceTask id="Activity_06al0cc" name="do magic with form data">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="jb_magic_form_data" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1lcgfl0</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ox0c6d</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_0ym804e" name="process ended">
+      <bpmn:incoming>Flow_0ox0c6d</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0ox0c6d" sourceRef="Activity_06al0cc" targetRef="Event_0ym804e" />
+    <bpmn:exclusiveGateway id="Gateway_030omrb">
+      <bpmn:incoming>Flow_103rahu</bpmn:incoming>
+      <bpmn:outgoing>Flow_1lcgfl0</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1tzwpnq</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1lcgfl0" sourceRef="Gateway_030omrb" targetRef="Activity_06al0cc">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=type = "MAIL"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:endEvent id="Event_1ssmcsv" name="process ended">
+      <bpmn:incoming>Flow_01zvaps</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1tzwpnq" sourceRef="Gateway_030omrb" targetRef="Activity_1qx38sx">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=type != "MAIL"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_01zvaps" sourceRef="Activity_1qx38sx" targetRef="Event_1ssmcsv" />
+    <bpmn:serviceTask id="Activity_1qx38sx" name="print wrong guess">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="=jb_print_wrong_guess" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1tzwpnq</bpmn:incoming>
+      <bpmn:outgoing>Flow_01zvaps</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:textAnnotation id="TextAnnotation_18gz57q">
+      <bpmn:text>jb_magic_process_data</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0k4kxbe" associationDirection="None" sourceRef="Activity_0lcd8sz" targetRef="TextAnnotation_18gz57q" />
+    <bpmn:textAnnotation id="TextAnnotation_1qwro5z">
+      <bpmn:text>jb_print_link</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1epzots" associationDirection="None" sourceRef="Activity_1790zec" targetRef="TextAnnotation_1qwro5z" />
+    <bpmn:textAnnotation id="TextAnnotation_0xaarmz">
+      <bpmn:text>jb_magic_form_data</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_15lkk3c" associationDirection="None" sourceRef="Activity_06al0cc" targetRef="TextAnnotation_0xaarmz" />
+    <bpmn:textAnnotation id="TextAnnotation_00v2foj">
+      <bpmn:text>message event: user_filled_form
+
+user should try to guess the right word for the next decision</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_07rrdam" associationDirection="None" sourceRef="Activity_0mluwzr" targetRef="TextAnnotation_00v2foj" />
+    <bpmn:textAnnotation id="TextAnnotation_1ia9q4c">
+      <bpmn:text>jb_print_reminder</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_08vq709" associationDirection="None" sourceRef="Activity_051lkjy" targetRef="TextAnnotation_1ia9q4c" />
+    <bpmn:textAnnotation id="TextAnnotation_16zcwoc">
+      <bpmn:text>jb_print_wrong_guess</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_051sgls" associationDirection="None" sourceRef="Activity_1qx38sx" targetRef="TextAnnotation_16zcwoc" />
+  </bpmn:process>
+  <bpmn:message id="Message_1o9e6u9" name="user_filled_form">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=formularId" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="demo_8_process">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1l8vreg_di" bpmnElement="Activity_0lcd8sz">
+        <dc:Bounds x="240" y="170" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1790zec_di" bpmnElement="Activity_1790zec">
+        <dc:Bounds x="400" y="170" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0xgvvo9_di" bpmnElement="Activity_0mluwzr">
+        <dc:Bounds x="560" y="170" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1rhh6uq_di" bpmnElement="Event_1rhh6uq">
+        <dc:Bounds x="592" y="472" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="570" y="515" width="81" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0aypvww_di" bpmnElement="Activity_051lkjy">
+        <dc:Bounds x="560" y="340" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0ym804e_di" bpmnElement="Event_0ym804e">
+        <dc:Bounds x="1022" y="192" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1004" y="235" width="73" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0e5i13j_di" bpmnElement="Activity_06al0cc">
+        <dc:Bounds x="850" y="170" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_030omrb_di" bpmnElement="Gateway_030omrb" isMarkerVisible="true">
+        <dc:Bounds x="705" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1ssmcsv_di" bpmnElement="Event_1ssmcsv">
+        <dc:Bounds x="882" y="302" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="864" y="345" width="73" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0og2p68_di" bpmnElement="Activity_1qx38sx">
+        <dc:Bounds x="680" y="280" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_0k4kxbe_di" bpmnElement="Association_0k4kxbe">
+        <di:waypoint x="275" y="170" />
+        <di:waypoint x="256" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1epzots_di" bpmnElement="Association_1epzots">
+        <di:waypoint x="488" y="170" />
+        <di:waypoint x="536" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_07rrdam_di" bpmnElement="Association_07rrdam">
+        <di:waypoint x="635" y="170" />
+        <di:waypoint x="655" y="138" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_15lkk3c_di" bpmnElement="Association_15lkk3c">
+        <di:waypoint x="896" y="170" />
+        <di:waypoint x="892" y="131" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_08vq709_di" bpmnElement="Association_08vq709">
+        <di:waypoint x="560" y="380" />
+        <di:waypoint x="519" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_051sgls_di" bpmnElement="Association_051sgls">
+        <di:waypoint x="744" y="360" />
+        <di:waypoint x="755" y="390" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_0ceu5cw_di" bpmnElement="Event_0ceu5cw">
+        <dc:Bounds x="592" y="232" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_18gz57q_di" bpmnElement="TextAnnotation_18gz57q">
+        <dc:Bounds x="200" y="90" width="200" height="30" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_1qwro5z_di" bpmnElement="TextAnnotation_1qwro5z">
+        <dc:Bounds x="500" y="90" width="100" height="30" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0xaarmz_di" bpmnElement="TextAnnotation_0xaarmz">
+        <dc:Bounds x="840" y="100" width="137" height="31" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_00v2foj_di" bpmnElement="TextAnnotation_00v2foj">
+        <dc:Bounds x="630" y="40" width="161" height="98" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1kp3ygj_di" bpmnElement="Flow_1kp3ygj">
+        <di:waypoint x="188" y="210" />
+        <di:waypoint x="240" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1e3klhy_di" bpmnElement="Flow_1e3klhy">
+        <di:waypoint x="340" y="210" />
+        <di:waypoint x="400" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0xry7ma_di" bpmnElement="Flow_0xry7ma">
+        <di:waypoint x="500" y="210" />
+        <di:waypoint x="560" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_103rahu_di" bpmnElement="Flow_103rahu">
+        <di:waypoint x="660" y="210" />
+        <di:waypoint x="705" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ull138_di" bpmnElement="Flow_1ull138">
+        <di:waypoint x="610" y="420" />
+        <di:waypoint x="610" y="472" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ak058u_di" bpmnElement="Flow_1ak058u">
+        <di:waypoint x="610" y="268" />
+        <di:waypoint x="610" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ox0c6d_di" bpmnElement="Flow_0ox0c6d">
+        <di:waypoint x="950" y="210" />
+        <di:waypoint x="1022" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1lcgfl0_di" bpmnElement="Flow_1lcgfl0">
+        <di:waypoint x="755" y="210" />
+        <di:waypoint x="850" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1tzwpnq_di" bpmnElement="Flow_1tzwpnq">
+        <di:waypoint x="730" y="235" />
+        <di:waypoint x="730" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_1ia9q4c_di" bpmnElement="TextAnnotation_1ia9q4c">
+        <dc:Bounds x="400" y="365" width="119" height="35" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_01zvaps_di" bpmnElement="Flow_01zvaps">
+        <di:waypoint x="780" y="320" />
+        <di:waypoint x="882" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_16zcwoc_di" bpmnElement="TextAnnotation_16zcwoc">
+        <dc:Bounds x="710" y="390" width="154" height="30" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
