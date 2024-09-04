@@ -70,9 +70,9 @@
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=type != "MAIL"</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_01zvaps" sourceRef="Activity_1qx38sx" targetRef="Event_1ssmcsv" />
-    <bpmn:serviceTask id="Activity_1qx38sx" name="print wrong guess">
+    <bpmn:serviceTask id="Activity_1qx38sx" name="print wrong choice">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="=jb_print_wrong_guess" />
+        <zeebe:taskDefinition type="jb_print_wrong_choice" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1tzwpnq</bpmn:incoming>
       <bpmn:outgoing>Flow_01zvaps</bpmn:outgoing>
@@ -100,7 +100,7 @@ user should try to guess the right word for the next decision</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:association id="Association_08vq709" associationDirection="None" sourceRef="Activity_051lkjy" targetRef="TextAnnotation_1ia9q4c" />
     <bpmn:textAnnotation id="TextAnnotation_16zcwoc">
-      <bpmn:text>jb_print_wrong_guess</bpmn:text>
+      <bpmn:text>jb_print_wrong_choice</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:association id="Association_051sgls" associationDirection="None" sourceRef="Activity_1qx38sx" targetRef="TextAnnotation_16zcwoc" />
   </bpmn:process>

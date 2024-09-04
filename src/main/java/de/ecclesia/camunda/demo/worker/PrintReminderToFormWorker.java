@@ -1,6 +1,5 @@
 package de.ecclesia.camunda.demo.worker;
 
-import static de.ecclesia.camunda.demo.bpmn.DemoProcessBpmn.JOB_WORKER_PRINT_FORM_LINK;
 import static de.ecclesia.camunda.demo.bpmn.DemoProcessBpmn.JOB_WORKER_PRINT_REMINDER;
 import static de.ecclesia.camunda.demo.bpmn.DemoProcessBpmn.VAR_FORMULAR_ID;
 

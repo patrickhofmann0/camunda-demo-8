@@ -53,7 +53,7 @@ public class FormView extends VerticalLayout implements HasUrlParameter<String> 
 		}
 		add(new H3(formular.getAdditionalInfo()));
 		TextField type = new TextField();
-		type.setLabel("Guess a type");
+		type.setLabel("Choose a type");
 		add(type);
 
 		Binder<Formular> binder = new Binder<>();
@@ -74,19 +74,16 @@ public class FormView extends VerticalLayout implements HasUrlParameter<String> 
 	private void submit(Formular bean) {
 		formService.save(bean);
 
-		zeebeClient.newSetVariablesCommand(bean.getProcessInstanceId())
-				.variables(Map.of(DemoProcessBpmn.VAR_TYPE, bean.getType()))
-				.send()
-				.join();
 		zeebeClient.newPublishMessageCommand()
 				.messageName(DemoProcessBpmn.RECEIVE_TASK_EVENT_USER_FORM)
 				.correlationKey(bean.getFormularId())
+				.variables(Map.of(DemoProcessBpmn.VAR_TYPE, bean.getType()))
 				.send()
 				.join();
 
 		Dialog dialog = new Dialog();
 		dialog.add(new H3("Formular saved"));
-		dialog.add(new Paragraph("See on console if it is the right guess"));
+		dialog.add(new Paragraph("See on console if it is the right choice"));
 		dialog.setModal(true);
 		dialog.setSizeFull();
 		dialog.open();
