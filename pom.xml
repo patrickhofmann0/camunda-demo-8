@@ -57,6 +57,8 @@
                 <artifactId>spring-boot-starter-camunda-sdk</artifactId>
                 <version>${camunda.version}</version>
             </dependency>
+
+
         </dependencies>
     </dependencyManagement>
 

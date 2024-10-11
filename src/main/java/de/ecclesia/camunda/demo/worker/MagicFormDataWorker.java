@@ -21,7 +21,7 @@ public class MagicFormDataWorker {
 		this.formService = formService;
 	}
 
-	@JobWorker(type = JOB_WORKER_MAGIC_FORM_DATA)
+	@JobWorker(type = "jb_magic_form_data")
 	@Transactional
 	public void doMagic(final ActivatedJob activatedJob) {
 		String formularId = activatedJob.getVariable(VAR_FORMULAR_ID).toString();
@@ -31,6 +31,5 @@ public class MagicFormDataWorker {
 		formService.deleteByFormularId(formularId);
 		System.out.println("Process terminated for form with id: " + formularId);
 	}
-
 
 }

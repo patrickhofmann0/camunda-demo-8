@@ -5,7 +5,9 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @Deployment(resources = {
-		"classpath:bpmn/demo-8-process.bpmn"})
+		"classpath:bpmn/demo-8-process.bpmn",
+		"classpath:bpmn/form_1.form"
+})
 public class BpmnConfig {
 
 
