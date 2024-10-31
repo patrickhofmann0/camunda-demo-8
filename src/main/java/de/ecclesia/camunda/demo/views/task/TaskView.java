@@ -49,9 +49,7 @@ public class TaskView extends VerticalLayout {
 
 		Button button = new Button("Submit");
 		button.setEnabled(false);
-		binder.addStatusChangeListener(event -> {
-			button.setEnabled(binder.isValid());
-		});
+		binder.addStatusChangeListener(event -> button.setEnabled(binder.isValid()));
 		add(button);
 
 		button.addClickListener(event -> submit(binder.getBean()));

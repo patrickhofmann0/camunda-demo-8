@@ -6,10 +6,12 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.data.binder.Binder;
 
 public class StepComponent<T> extends CustomField<T> {
 
 	protected final VerticalLayout questionLayout = new VerticalLayout();
+	protected final Binder<T> binder = new Binder<>();
 	private T value;
 	private Button button = new Button();
 

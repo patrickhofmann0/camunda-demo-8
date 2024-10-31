@@ -1,18 +1,14 @@
 package de.ecclesia.camunda.demo.views.vm.industrie.steps;
 
-import com.vaadin.flow.data.binder.Binder;
-
-import de.ecclesia.camunda.demo.views.vm.components.complex.AddressQuestionComponent;
-import de.ecclesia.camunda.demo.views.vm.components.basic.NumberFieldQuestion;
 import de.ecclesia.camunda.demo.views.vm.components.StepComponent;
+import de.ecclesia.camunda.demo.views.vm.components.basic.NumberFieldQuestion;
 import de.ecclesia.camunda.demo.views.vm.components.basic.TextFieldQuestion;
+import de.ecclesia.camunda.demo.views.vm.components.complex.AddressQuestionComponent;
 import de.ecclesia.camunda.demo.views.vm.components.complex.CalculationComponent;
 import de.ecclesia.camunda.demo.views.vm.components.complex.ShowTextFieldOnCheckBoxComponent;
 import de.ecclesia.camunda.demo.views.vm.industrie.entity.VersicherungsNehmer;
 
-public class VersicherungsNehmerStep extends StepComponent {
-
-	private final Binder<VersicherungsNehmer> binder = new Binder<>();
+public class VersicherungsNehmerStep extends StepComponent<VersicherungsNehmer> {
 
 	public VersicherungsNehmerStep() {
 		super("Sachversicherung", new VersicherungsNehmer());
